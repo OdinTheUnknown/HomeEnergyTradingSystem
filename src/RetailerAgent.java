@@ -5,6 +5,10 @@ import jade.core.behaviours.ParallelBehaviour;
 import jade.core.behaviours.FSMBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.*;
+import jade.domain.FIPAException;
+
 
 public class RetailerAgent extends Agent {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +16,7 @@ public class RetailerAgent extends Agent {
 	private class Message {
 		public AID sender;
 		public String messageType;
-		public int energy;
+		public double energy;
 		public double oldCost;
 		public double newCost;
 		
@@ -20,12 +24,12 @@ public class RetailerAgent extends Agent {
 		{
 			sender = new AID();
 			messageType = "request";
-			energy = 50;
+			energy = 50.0;
 			oldCost = 0.0;
 			newCost = 50.0;
 		}
 		
-		public Message(AID Sender, String MessageType, int Energy, double OldCost, double NewCost)
+		public Message(AID Sender, String MessageType, double Energy, double OldCost, double NewCost)
 		{
 			sender = Sender;
 			messageType = MessageType;
@@ -135,11 +139,10 @@ public class RetailerAgent extends Agent {
 					System.out.println(getLocalName() +": I handled a counter-offer message!");
 					break;
 				}
-				//case "confirm": {
-				//	//FOR NOW, VICTORY MESSAGE
-				//	System.out.println(getLocalName() +": I handled a confirm!");
-				//	break;
-				//}
+				case "confirm": {
+					System.out.println(getLocalName() +": I handled a confirm!");
+					break;
+				}
 				default: {
 					break;
 				}
@@ -202,17 +205,14 @@ public class RetailerAgent extends Agent {
 							//FOR NOW, VICTORY MESSAGE
 							System.out.println(getLocalName() +": Hooray! I just made a sale to " +msg.getSender().toString() +"!\n" +messageSplit[1] +" energy for " +Double.parseDouble(messageSplit[2]) + "cost.");
 							
-							//FIRST OPTION: ADD A MESSAGE LIKE NORMAL, handle storing info later
-							/*
-							String send = msg.getSender().toString();
+							//ADD A MESSAGE LIKE NORMAL, handle storing info later
+							AID send = msg.getSender();
 							String type = messageSplit[0];
 							int a = Integer.parseInt(messageSplit[1]);
 							double b = Double.parseDouble(messageSplit[2]);
 							Message temp = new Message(send, type, a, b, b);
 							_messages.add(temp);
-							*/
 							
-							//OTHER OPTION: DEAL WITH storing info now (potential problem with accessing data in use???)
 							break;
 						}
 						default: {
