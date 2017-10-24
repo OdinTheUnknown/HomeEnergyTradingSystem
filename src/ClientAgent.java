@@ -86,6 +86,7 @@ public class ClientAgent extends Agent implements ClientAgentInterface {
 	}
 	
 	protected void setup() {
+		registerO2AInterface(ClientAgentInterface.class, this);
 		Object[] args = getArguments();
 		
 	  	if (args != null && args.length > 0)
@@ -287,6 +288,8 @@ public class ClientAgent extends Agent implements ClientAgentInterface {
 			{
 				try {
 					Thread.sleep(20000);
+					System.out.println("Agent " +getLocalName() +": I want a new deal...");
+					TriggerDissatisfied();
 				}
 				catch (InterruptedException e) {	}
 			}

@@ -73,6 +73,7 @@ public class RetailerAgent extends Agent implements RetailerAgentInterface {
 	
 	//set up behaviours and/or default variable values
 	protected void setup() {
+		registerO2AInterface(RetailerAgentInterface.class, this);
 		Object[] args = getArguments();
 		
 	  	if (args != null && args.length > 0)
@@ -290,9 +291,14 @@ public class RetailerAgent extends Agent implements RetailerAgentInterface {
 	    	
 	    	if (cost <= min)
 	    		cost = min;
-	    	else
-	    		cost = cost + ((oldCost - cost) * _random.nextDouble());
-	    	
+	    	else {
+	    		double maxCost = (energy * _energyRate) + (_random.nextInt(20) + 1);
+	    		
+	    		if (oldCost > maxCost)
+	    			cost = maxCost;
+	    		else
+	    			cost = cost + ((oldCost - cost) * _random.nextDouble());
+	    	}
 
     		cost = Math.round(cost * 100);
     		cost = cost / 100;
